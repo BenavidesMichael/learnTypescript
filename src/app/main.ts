@@ -1,8 +1,10 @@
-import { addProduct, products, searchProducts, updateProduct } from "../services/product.service";
 import { faker } from "@faker-js/faker"
+import { ProductService } from "../services/product.service";
+
+const productService: ProductService = new ProductService();
 
 for (let index = 0; index < 50; index++) {
-  addProduct({
+  productService.createProduct({
     title: faker.commerce.productName(),
     stock: faker.number.int({min:1, max: 50}),
     price: parseInt(faker.commerce.price()),
@@ -15,18 +17,20 @@ for (let index = 0; index < 50; index++) {
   });
 }
 
-console.table(products);
+console.log('------------------------------------------------------------');
+console.log(productService.getProducts());
+console.log('------------------------------------------------------------');
 
-updateProduct(products[0].id, {
+productService.updateProduct(productService.getProducts()[0].id, {
   title: 'New title',
   stock: 80,
   price: 45,
 });
 
-
-console.table(products);
-
-searchProducts({
+console.log('------------------------------------------------------------');
+console.log(productService.getProducts());
+console.log('------------------------------------------------------------');
+productService.searchProducts({
   stock: 80,
   createDate: new Date(),
   tags: ['Fresh', 'Handcrafted'],
